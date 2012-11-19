@@ -5,13 +5,11 @@
 // 
 // Filename: OpenCNAMTests.cs
 // Created: 11/18/2012 [7:49 PM]
-// Modified: 11/18/2012 [8:45 PM]
+// Modified: 11/18/2012 [10:45 PM]
 
 #endregion
 
 using System;
-using System.IO;
-using System.Net;
 using Xunit;
 
 namespace dotnet_opencnam.tests
@@ -20,56 +18,45 @@ namespace dotnet_opencnam.tests
   {
     private const string ValidLookup = "+16502530000";
     private const string InvalidLookup = "cnam";
-    
+
     public OpenCNAMTests()
     {
       OpenCNAM.UseHTTPAuth = false;
+      OpenCNAM.AccountSID = string.Empty;
+      OpenCNAM.AuthToken = string.Empty;
     }
 
     [Fact]
-    public void ReturnsAResponse()
+    public void ReturnsAResponseOnValidLookup()
     {
       var response = OpenCNAM.Lookup(ValidLookup);
       Assert.False(string.IsNullOrEmpty(response));
     }
 
     [Fact]
-    public void ThrowsWebExceptionIfInvalidFormat()
-    {
-      Assert.Throws<WebException>(() => { OpenCNAM.Lookup(InvalidLookup); });
-    }
-
-    [Fact]
-    public void BadRequestContainsAnErrorMessage()
+    public void OpenCNAMExceptionContainsDetails()
     {
       try
       {
         OpenCNAM.Lookup(InvalidLookup);
       }
-      catch (WebException ex)
+      catch (OpenCNAMException ex)
       {
-        using(var stream = ex.Response.GetResponseStream())
-        {
-          Assert.NotNull(stream);
-
-          using(var reader = new StreamReader(stream))
-          {
-            var response = reader.ReadToEnd();
-            Assert.False(string.IsNullOrEmpty(response));
-
-            reader.Close();
-          }
-
-          stream.Close();
-        }
+        Assert.False(string.IsNullOrEmpty(ex.ServerResponse));
+        Assert.NotNull(ex.StatusCode);
       }
     }
 
     [Fact]
-    public void ThrowsInvalidOperationExceptionIfAccountSIDIsNoSet()
+    public void ThrowsOpenCNAMExceptionIfNotOk()
     {
-      OpenCNAM.UseHTTPAuth = true;
-      Assert.Throws<InvalidOperationException>(() => { OpenCNAM.Lookup(ValidLookup); });
+      Assert.Throws<OpenCNAMException>(() => { OpenCNAM.Lookup(InvalidLookup); });
+    }
+
+    [Fact]
+    public void ThrowsInvOpExceptionIfCredentialsArentSet()
+    {
+      Assert.Throws<InvalidOperationException>(() => { OpenCNAM.Lookup(ValidLookup, true); });
     }
   }
 }

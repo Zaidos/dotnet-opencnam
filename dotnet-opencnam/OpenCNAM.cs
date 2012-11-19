@@ -5,13 +5,14 @@
 // 
 // Filename: OpenCNAM.cs
 // Created: 11/18/2012 [7:35 PM]
-// Modified: 11/18/2012 [7:36 PM]
+// Modified: 11/18/2012 [10:17 PM]
 
 #endregion
 
 using System;
 using System.IO;
 using System.Net;
+using System.Text;
 
 namespace dotnet_opencnam
 {
@@ -22,52 +23,71 @@ namespace dotnet_opencnam
     private const string QueryFormat = "text";
 
     public static bool UseHTTPAuth { get; set; }
-
     public static string AccountSID { get; set; }
     public static string AuthToken { get; set; }
-    
-    public static string Lookup(string lookup)
+
+    public static string Lookup(string lookup, bool useAuth = false)
     {
-      var request = WebRequest.Create(BuildUrl(lookup));
-      
+      var request = WebRequest.Create(BuildUrl(lookup, useAuth));
+
       string lookupResponse;
 
-      using(var response = (HttpWebResponse)request.GetResponse())
+      try
       {
-        using ( var stream = response.GetResponseStream() )
+        using ( var response = (HttpWebResponse)request.GetResponse() )
         {
-          if (stream == null)
-            throw new InvalidOperationException("Response contained an empty response.");
-
-          using (var reader = new StreamReader(stream))
+          using ( var stream = response.GetResponseStream() )
           {
-            lookupResponse = reader.ReadToEnd();
-            reader.Close();
+            if ( stream == null )
+              throw new InvalidOperationException("Response was empty.");
+
+            using ( var reader = new StreamReader(stream) )
+            {
+              lookupResponse = reader.ReadToEnd();
+              reader.Close();
+            }
+
+            stream.Close();
           }
 
-          stream.Close();
+          response.Close();
         }
-
-        response.Close();
+      }
+      catch (WebException ex)
+      {
+        throw new OpenCNAMException(ex);
       }
 
       return lookupResponse;
     }
 
-    private static string BuildUrl(string lookup)
+    private static string BuildUrl(string lookup, bool auth = false)
     {
-      if(UseHTTPAuth)
+      if (auth)
       {
-        if(string.IsNullOrEmpty(AccountSID))
-          throw new InvalidOperationException("Account SID can not be empty. Set the AccountSID with OpenCNAM.AccountSID");
+        ValidateAuthenticatedRequest();
 
-        if(string.IsNullOrEmpty(AuthToken))
-          throw new InvalidOperationException("Authentication token can not be empty. Set token with OpenCNAM.AuthToken");
+        if (UseHTTPAuth)
+          return string.Format(HttpUrlTemplate, AccountSID, AuthToken, lookup, QueryFormat);
+      }
 
-        return string.Format(HttpUrlTemplate, AccountSID, AuthToken, lookup, QueryFormat);
-      } 
+      var sb = new StringBuilder(string.Format(QueryUrlTemplate, lookup, QueryFormat));
 
-      return string.Format(QueryUrlTemplate, lookup, QueryFormat);
+      if (auth)
+      {
+        sb.Append(string.Format("&account_sid={0}&auth_token={1}", AccountSID, AuthToken));
+      }
+
+      return sb.ToString();
+    }
+
+    private static void ValidateAuthenticatedRequest()
+    {
+      if (string.IsNullOrEmpty(AccountSID))
+        throw new InvalidOperationException("Account SID can not be empty. Set the AccountSID with OpenCNAM.AccountSID");
+
+      if (string.IsNullOrEmpty(AuthToken))
+        throw new InvalidOperationException("Authentication token can not be empty. Set token with OpenCNAM.AuthToken");
     }
   }
 }
