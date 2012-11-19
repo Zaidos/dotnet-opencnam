@@ -59,10 +59,10 @@ namespace dotnet_opencnam
       if(UseHTTPAuth)
       {
         if(string.IsNullOrEmpty(AccountSID))
-          throw new InvalidOperationException("Account SID can not be null. Set the AccountSID with OpenCNAM.AccountSID");
+          throw new InvalidOperationException("Account SID can not be empty. Set the AccountSID with OpenCNAM.AccountSID");
 
         if(string.IsNullOrEmpty(AuthToken))
-          throw new InvalidOperationException("Authentication token can not be null. Set token with OpenCNAM.AuthToken");
+          throw new InvalidOperationException("Authentication token can not be empty. Set token with OpenCNAM.AuthToken");
 
         return string.Format(HttpUrlTemplate, AccountSID, AuthToken, lookup, QueryFormat);
       } 

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Net;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace dotnet_opencnam.tests
   {
     private const string ValidLookup = "+16502530000";
     private const string InvalidLookup = "cnam";
-     
+    
     public OpenCNAMTests()
     {
       OpenCNAM.UseHTTPAuth = false;
@@ -39,7 +40,7 @@ namespace dotnet_opencnam.tests
     }
 
     [Fact]
-    public void BadRequestHasErrorMessage()
+    public void BadRequestContainsAnErrorMessage()
     {
       try
       {
@@ -47,11 +48,19 @@ namespace dotnet_opencnam.tests
       }
       catch (WebException ex)
       {
-        var response = ex.Response;
-
-        using(var stream = response.GetResponseStream())
+        using(var stream = ex.Response.GetResponseStream())
         {
           Assert.NotNull(stream);
+
+          using(var reader = new StreamReader(stream))
+          {
+            var response = reader.ReadToEnd();
+            Assert.False(string.IsNullOrEmpty(response));
+
+            reader.Close();
+          }
+
+          stream.Close();
         }
       }
     }
