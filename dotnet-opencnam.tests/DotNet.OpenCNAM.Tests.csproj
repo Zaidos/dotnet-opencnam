@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dotnet-opencnam\dotnet-opencnam.csproj">
+    <ProjectReference Include="..\dotnet-opencnam\DotNet.OpenCNAM.csproj">
       <Project>{3DEE1C42-7488-401A-9243-76193C201889}</Project>
-      <Name>dotnet-opencnam</Name>
+      <Name>DotNet.OpenCNAM</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

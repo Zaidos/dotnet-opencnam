@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-opencnam", "dotnet-opencnam\dotnet-opencnam.csproj", "{3DEE1C42-7488-401A-9243-76193C201889}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.OpenCNAM", "dotnet-opencnam\DotNet.OpenCNAM.csproj", "{3DEE1C42-7488-401A-9243-76193C201889}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-opencnam.tests", "dotnet-opencnam.tests\dotnet-opencnam.tests.csproj", "{DAA9C836-E6A8-4A5B-90CB-0562457091E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.OpenCNAM.Tests", "dotnet-opencnam.tests\DotNet.OpenCNAM.Tests.csproj", "{DAA9C836-E6A8-4A5B-90CB-0562457091E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

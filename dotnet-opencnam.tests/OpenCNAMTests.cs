@@ -1,18 +1,18 @@
 ﻿#region File Info
 
 // Solution: dotnet-opencnam
-// Project: dotnet-opencnam.tests
+// Project: DotNet.OpenCNAM.Tests
 // 
 // Filename: OpenCNAMTests.cs
 // Created: 11/18/2012 [7:49 PM]
-// Modified: 11/18/2012 [10:45 PM]
+// Modified: 11/21/2012 [11:38 PM]
 
 #endregion
 
 using System;
 using Xunit;
 
-namespace dotnet_opencnam.tests
+namespace DotNet.OpenCNAM.tests
 {
   public class OpenCNAMTests
   {

@@ -13,7 +13,7 @@ using System;
 using System.IO;
 using System.Net;
 
-namespace dotnet_opencnam
+namespace DotNet.OpenCNAM
 {
   public class OpenCNAMException : Exception
   {

@@ -14,7 +14,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace dotnet_opencnam
+namespace DotNet.OpenCNAM
 {
   public static class OpenCNAM
   {

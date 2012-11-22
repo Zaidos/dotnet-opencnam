@@ -8,8 +8,8 @@
     <ProjectGuid>{3DEE1C42-7488-401A-9243-76193C201889}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dotnet_opencnam</RootNamespace>
-    <AssemblyName>dotnet-opencnam</AssemblyName>
+    <RootNamespace>DotNet.OpenCNAM</RootNamespace>
+    <AssemblyName>DotNet.OpenCNAM</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
