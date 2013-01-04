@@ -1,4 +1,4 @@
-dotnet-opencnam
+DotNet.OpenCNAM
 ---
 a really easy to use opencnam library written in .net
 
